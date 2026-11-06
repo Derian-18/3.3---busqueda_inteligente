@@ -1,0 +1,720 @@
+:host {
+  --tinta: #1c1b1f;
+  --tinta-suave: #5d5a55;
+  --papel: #f6f4f0;
+  --blanco: #ffffff;
+  --linea: #e6e1d8;
+  --acento: #c2512f;
+  --acento-oscuro: #a2401f;
+  --acento-fondo: #fbeee8;
+  --radio: 16px;
+
+  display: block;
+  min-height: 100vh;
+  color: var(--tinta);
+  background: var(--papel);
+}
+
+/* ------------------------------------------------------------ Barra superior */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--linea);
+}
+
+.topbar__inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'marca buscador bolsa';
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--tinta);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--tinta);
+  color: var(--blanco);
+  font-size: 1.1rem;
+}
+
+.brand__light {
+  font-weight: 400;
+  color: var(--acento);
+}
+
+/* --------------------------------------------------------- Buscador a medida */
+.buscador {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 640px;
+  width: 100%;
+  margin-left: auto;
+}
+
+.buscador__icono {
+  position: absolute;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--tinta-suave);
+  stroke-width: 2;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.buscador__input {
+  width: 100%;
+  padding: 0.85rem 2.8rem 0.85rem 2.9rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: #efebe4;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 0.98rem;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.buscador__input::placeholder {
+  color: #8a857c;
+}
+
+.buscador__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.buscador__input:hover {
+  background: #e9e4db;
+}
+
+.buscador__input:focus {
+  outline: none;
+  background: var(--blanco);
+  border-color: var(--acento);
+  box-shadow: 0 0 0 4px rgba(194, 81, 47, 0.15);
+}
+
+.buscador__limpiar {
+  position: absolute;
+  right: 0.7rem;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: #dcd6cb;
+  color: var(--tinta);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.buscador__limpiar:hover {
+  background: var(--acento);
+  color: var(--blanco);
+  transform: rotate(90deg);
+}
+
+/* ---------------------------------------------------------------------- Hero */
+.hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(194, 81, 47, 0.35), transparent 45%),
+    linear-gradient(135deg, #1c1b1f 0%, #34302b 100%);
+  color: var(--blanco);
+}
+
+.hero__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 3.2rem;
+}
+
+.hero__etiqueta {
+  margin: 0 0 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f0b9a4;
+}
+
+.hero__titulo {
+  max-width: 18ch;
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.hero__texto {
+  max-width: 48ch;
+  margin: 0;
+  color: #d9d4cb;
+  font-size: 1.05rem;
+}
+
+/* ------------------------------------------------- Distribución principal (Grid) */
+.layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* -------------------------------------------------------------------- Filtros */
+.filtros {
+  position: sticky;
+  top: 5.5rem;
+  display: grid;
+  gap: 1.6rem;
+  padding: 1.4rem;
+  background: var(--blanco);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+}
+
+.filtros__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filtros__titulo {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.filtros__subtitulo {
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.enlace {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--acento);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.enlace:hover {
+  color: var(--acento-oscuro);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chips--compactos {
+  margin-top: 0.9rem;
+}
+
+.chip {
+  padding: 0.5rem 0.95rem;
+  border: 1.5px solid var(--linea);
+  border-radius: 999px;
+  background: var(--blanco);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+.chip--activo,
+.chip--activo:hover {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--blanco);
+}
+
+.chip--suave {
+  font-size: 0.8rem;
+  background: var(--papel);
+}
+
+.precio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.precio__campo {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--tinta-suave);
+}
+
+.precio__campo input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1.5px solid var(--linea);
+  border-radius: 10px;
+  background: var(--papel);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 0.92rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.precio__campo input:focus {
+  outline: none;
+  background: var(--blanco);
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px rgba(194, 81, 47, 0.15);
+}
+
+.precio__guion {
+  padding-bottom: 0.55rem;
+  color: var(--tinta-suave);
+}
+
+/* ------------------------------------------------------------------ Resultados */
+.resultados__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.contador {
+  margin: 0;
+  color: var(--tinta-suave);
+  font-size: 1rem;
+}
+
+.contador__numero {
+  display: inline-block;
+  min-width: 2ch;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: var(--acento-fondo);
+  color: var(--acento-oscuro);
+  text-align: center;
+}
+
+.contador__total {
+  margin-left: 0.3rem;
+  font-size: 0.88rem;
+  opacity: 0.8;
+}
+
+/* ------------------------------------------------ Tarjetas en CSS Grid dinámico */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--blanco);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  box-shadow: 0 1px 2px rgba(28, 27, 31, 0.04);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  animation: aparecer 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 35ms);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: transparent;
+  box-shadow: 0 22px 40px -20px rgba(28, 27, 31, 0.45);
+}
+
+.card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #ece8e1;
+}
+
+.card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.card:hover .card__media img {
+  transform: scale(1.09);
+}
+
+.card__categoria {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--tinta);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+.card__cuerpo {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+/* Barra de acento que se despliega al pasar el cursor */
+.card__cuerpo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--acento);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card__cuerpo::before {
+  transform: scaleX(1);
+}
+
+.card__nombre {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.card__descripcion {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--tinta-suave);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.card__precio {
+  margin: auto 0 0;
+  padding-top: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.card__moneda {
+  margin-left: 0.15rem;
+  color: var(--tinta-suave);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------- Sin coincidencias */
+.vacio {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  background: var(--blanco);
+  border: 2px dashed var(--linea);
+  border-radius: var(--radio);
+  animation: aparecer 0.4s ease both;
+}
+
+.vacio__icono {
+  font-size: 2.6rem;
+}
+
+.vacio__titulo {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.vacio__texto {
+  max-width: 42ch;
+  margin: 0 0 0.6rem;
+  color: var(--tinta-suave);
+}
+
+.boton {
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tinta);
+  color: var(--blanco);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.boton:hover {
+  background: var(--acento);
+  transform: translateY(-2px);
+}
+
+/* ----------------------------------------------------------------------- Pie */
+.pie {
+  padding: 1.6rem 1.25rem;
+  border-top: 1px solid var(--linea);
+  text-align: center;
+  color: var(--tinta-suave);
+  font-size: 0.85rem;
+}
+
+.pie p {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ Animación */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ----------------------------------------------------------------- Responsive */
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .filtros {
+    position: static;
+  }
+
+  .filtros__grupo .chips:not(.chips--compactos) {
+    flex-wrap: nowrap;
+    padding-bottom: 0.3rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .chip {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar__inner {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'marca bolsa'
+      'buscador buscador';
+    gap: 0.8rem;
+  }
+
+  .buscador {
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .hero__inner {
+    padding: 2rem 1.25rem 2.2rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .card__cuerpo {
+    padding: 0.8rem 0.8rem 1rem;
+  }
+
+  .card__descripcion {
+    display: none;
+  }
+
+  .card__nombre {
+    font-size: 0.95rem;
+  }
+
+  .card__precio {
+    font-size: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------- Bolsa de compras (contador del carrito) */
+.brand {
+  grid-area: marca;
+}
+
+.buscador {
+  grid-area: buscador;
+}
+
+.bolsa {
+  position: relative;
+  display: grid;
+  grid-area: bolsa;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #efebe4;
+  color: var(--tinta);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bolsa:hover {
+  background: var(--tinta);
+  color: var(--blanco);
+  transform: translateY(-2px);
+}
+
+.bolsa svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bolsa__cuenta {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--acento);
+  color: var(--blanco);
+  font-size: 0.72rem;
+  font-weight: 700;
+  animation: aparecer 0.3s ease both;
+}
+
+/* ---------------------------------- Tarjeta completa clicable (abre el detalle) */
+.card {
+  position: relative;
+  cursor: pointer;
+}
+
+.card__abrir {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* El botón del nombre se estira para cubrir toda la tarjeta */
+.card__abrir::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card__abrir:focus-visible {
+  outline: none;
+}
+
+.card:has(.card__abrir:focus-visible) {
+  outline: 3px solid var(--acento);
+  outline-offset: 3px;
+}

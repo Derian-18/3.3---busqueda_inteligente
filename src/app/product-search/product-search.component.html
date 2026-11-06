@@ -1,0 +1,173 @@
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="#" aria-label="Nova Moda, inicio">
+      <span class="brand__mark" aria-hidden="true">R</span>
+      <span class="brand__name">Ropa<span class="brand__light"></span></span>
+    </a>
+
+    <!-- Barra de búsqueda personalizada -->
+    <div class="buscador" role="search">
+      <svg class="buscador__icono" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="M20 20l-3.5-3.5" />
+      </svg>
+      <input
+        id="buscador"
+        class="buscador__input"
+        type="search"
+        autocomplete="off"
+        placeholder="Buscar por nombre: camisa, jeans, botas…"
+        aria-label="Buscar productos por nombre"
+        [formControl]="busqueda"
+      />
+      @if (busqueda.value) {
+        <button type="button" class="buscador__limpiar" aria-label="Borrar búsqueda" (click)="limpiarBusqueda()">
+          ✕
+        </button>
+      }
+    </div>
+
+    <button type="button" class="bolsa" [attr.aria-label]="'Carrito, ' + carrito() + ' artículos'">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5.5 9h13l-1.1 10.2a1.5 1.5 0 0 1-1.5 1.3H8.1a1.5 1.5 0 0 1-1.5-1.3L5.5 9z" />
+        <path d="M9 9V7.5a3 3 0 0 1 6 0V9" />
+      </svg>
+      @if (carrito() > 0) {
+        <span class="bolsa__cuenta">{{ carrito() }}</span>
+      }
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero__inner">
+    <p class="hero__etiqueta">Colección Otoño · Invierno 2026</p>
+    <h1 class="hero__titulo">Ropa para cada día, sin complicaciones</h1>
+    <p class="hero__texto">Encuentra tu próxima prenda favorita. Filtra por categoría y precio al instante.</p>
+  </div>
+</section>
+
+<main class="layout">
+  <!-- Filtros visuales -->
+  <aside class="filtros" aria-label="Filtros del catálogo">
+    <div class="filtros__cabecera">
+      <h2 class="filtros__titulo">Filtros</h2>
+      <button type="button" class="enlace" (click)="limpiarFiltros()">Limpiar todo</button>
+    </div>
+
+    <section class="filtros__grupo">
+      <h3 class="filtros__subtitulo">Categoría</h3>
+      <div class="chips">
+        @for (cat of categorias; track cat) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--activo]="categoria.value === cat"
+            [attr.aria-pressed]="categoria.value === cat"
+            (click)="seleccionarCategoria(cat)"
+          >
+            {{ cat }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="filtros__grupo">
+      <h3 class="filtros__subtitulo">Precio (MXN)</h3>
+      <div class="precio">
+        <label class="precio__campo">
+          <span>Mínimo</span>
+          <input type="number" min="0" step="50" inputmode="numeric" placeholder="$0" [formControl]="precioMin" />
+        </label>
+        <span class="precio__guion" aria-hidden="true">–</span>
+        <label class="precio__campo">
+          <span>Máximo</span>
+          <input type="number" min="0" step="50" inputmode="numeric" placeholder="Sin límite" [formControl]="precioMax" />
+        </label>
+      </div>
+
+      <div class="chips chips--compactos">
+        @for (rango of rangosRapidos; track rango.etiqueta) {
+          <button
+            type="button"
+            class="chip chip--suave"
+            [class.chip--activo]="rangoActivo(rango)"
+            [attr.aria-pressed]="rangoActivo(rango)"
+            (click)="aplicarRango(rango)"
+          >
+            {{ rango.etiqueta }}
+          </button>
+        }
+      </div>
+    </section>
+  </aside>
+
+  <!-- Resultados -->
+  <section class="resultados" aria-label="Resultados">
+    @if (resultado$ | async; as r) {
+      <div class="resultados__barra">
+        <p class="contador" aria-live="polite" role="status">
+          <strong class="contador__numero">{{ r.total }}</strong>
+          {{ r.total === 1 ? 'producto encontrado' : 'productos encontrados' }}
+          <span class="contador__total">de {{ productos.length }}</span>
+        </p>
+      </div>
+
+      @if (r.rangoInvalido) {
+        <div class="vacio" role="alert">
+          <div class="vacio__icono" aria-hidden="true">⚠️</div>
+          <h2 class="vacio__titulo">Revisa el rango de precios</h2>
+          <p class="vacio__texto">El precio mínimo no puede ser mayor que el máximo.</p>
+        </div>
+      } @else if (r.total === 0) {
+        <div class="vacio" role="status">
+          <div class="vacio__icono" aria-hidden="true">🔍</div>
+          <h2 class="vacio__titulo">No encontramos coincidencias</h2>
+          <p class="vacio__texto">
+            Ningún producto cumple con la búsqueda y los filtros actuales. Prueba con otro nombre o amplía el rango de
+            precios.
+          </p>
+          @if (r.hayFiltros) {
+            <button type="button" class="boton" (click)="limpiarFiltros()">Quitar filtros</button>
+          }
+        </div>
+      } @else {
+        <ul class="grid">
+          @for (p of r.productos; track p.id; let i = $index) {
+            <li class="card" [style.--i]="i">
+              <div class="card__media">
+                <img [src]="p.imagen" [alt]="p.nombre" loading="lazy" width="600" height="750" (error)="imagenFallida($event)" />
+                <span class="card__categoria">{{ p.categoria }}</span>
+              </div>
+              <div class="card__cuerpo">
+                <h3 class="card__nombre">
+                  <button type="button" class="card__abrir" (click)="abrirDetalle(p)">{{ p.nombre }}</button>
+                </h3>
+                <p class="card__descripcion">{{ p.descripcion }}</p>
+                <p class="card__precio">
+                  {{ p.precio | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }}
+                  <span class="card__moneda">MXN</span>
+                </p>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </section>
+</main>
+
+<footer class="pie">
+  <p>© 2026 Nova Moda · Proyecto académico de catálogo con Angular y RxJS</p>
+</footer>
+
+<!-- Vista de detalle: se abre al seleccionar una tarjeta -->
+@if (seleccionado(); as p) {
+  <app-product-detail
+    [producto]="p"
+    [favorito]="esFavorito(p.id)"
+    (cerrar)="cerrarDetalle()"
+    (alternarFavorito)="alternarFavorito(p.id)"
+    (agregar)="agregarAlCarrito()"
+  />
+}

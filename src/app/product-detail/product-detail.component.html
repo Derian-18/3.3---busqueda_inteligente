@@ -1,0 +1,154 @@
+<div class="fondo" (click)="cerrar.emit()">
+  <article
+    #panel
+    class="detalle"
+    role="dialog"
+    aria-modal="true"
+    tabindex="-1"
+    [attr.aria-label]="'Detalle de ' + producto().nombre"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Galería -->
+    <section class="galeria" aria-label="Imágenes del producto">
+      <div class="galeria__barra">
+        <button type="button" class="icono" aria-label="Volver al catálogo" (click)="cerrar.emit()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 12H5" />
+            <path d="M11 6l-6 6 6 6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="icono"
+          [class.icono--activo]="favorito()"
+          [attr.aria-pressed]="favorito()"
+          [attr.aria-label]="favorito() ? 'Quitar de favoritos' : 'Guardar en favoritos'"
+          (click)="alternarFavorito.emit()"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 21s-7.5-4.6-9.3-9.2C1.4 8.2 3.6 5 6.8 5c1.9 0 3.5 1 5.2 3 1.7-2 3.3-3 5.2-3 3.2 0 5.4 3.2 4.1 6.8C19.5 16.4 12 21 12 21z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="galeria__principal">
+        <img [src]="producto().imagenes[imagenActiva()]" [alt]="producto().nombre" (error)="imagenFallida($event)" />
+      </div>
+
+      <div class="galeria__miniaturas">
+        @for (img of producto().imagenes; track $index) {
+          <button
+            type="button"
+            class="miniatura"
+            [class.miniatura--activa]="imagenActiva() === $index"
+            [attr.aria-pressed]="imagenActiva() === $index"
+            [attr.aria-label]="'Ver imagen ' + ($index + 1)"
+            (click)="imagenActiva.set($index)"
+          >
+            <img [src]="img" alt="" loading="lazy" (error)="imagenFallida($event)" />
+          </button>
+        }
+      </div>
+    </section>
+
+    <!-- Información -->
+    <section class="info">
+      <div class="info__meta">
+        <p class="info__categoria">{{ producto().categoria }}</p>
+        <p class="info__valoracion" [attr.aria-label]="'Valoración ' + producto().valoracion.toFixed(1) + ' de 5'">
+          <span class="info__estrella" aria-hidden="true">★</span> ({{ producto().valoracion.toFixed(1) }})
+        </p>
+      </div>
+
+      <div class="info__titulo">
+        <h2 class="info__nombre">{{ producto().nombre }}</h2>
+        <p class="info__precio">{{ producto().precio | currency: 'MXN' : 'symbol-narrow' : '1.2-2' }}</p>
+      </div>
+
+      <div class="grupo">
+        <div class="grupo__cabecera">
+          <h3 class="grupo__titulo">Talla:</h3>
+          @if (esCalzado()) {
+            <div class="sistemas" role="group" aria-label="Sistema de tallas">
+              @for (s of sistemas; track s) {
+                <button
+                  type="button"
+                  class="sistema"
+                  [class.sistema--activo]="sistema() === s"
+                  [attr.aria-pressed]="sistema() === s"
+                  (click)="sistema.set(s)"
+                >
+                  {{ s }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="tallas">
+          @for (t of producto().tallas; track t.valor) {
+            <button
+              type="button"
+              class="talla"
+              [class.talla--activa]="tallaElegida() === t.valor"
+              [class.talla--agotada]="t.agotada"
+              [disabled]="t.agotada"
+              [attr.aria-pressed]="tallaElegida() === t.valor"
+              [attr.title]="t.agotada ? 'Agotada' : null"
+              (click)="elegirTalla(t)"
+            >
+              {{ etiquetaTalla(t.valor) }}
+            </button>
+          }
+        </div>
+
+        @if (esCalzado() && sistema() !== 'MX') {
+          <p class="nota">Equivalencias aproximadas a partir de la medida MX.</p>
+        }
+      </div>
+
+      <div class="grupo">
+        <h3 class="grupo__titulo">
+          Colores: <span class="grupo__valor">{{ colorActual().nombre }}</span>
+        </h3>
+        <div class="colores">
+          @for (c of producto().colores; track c.nombre) {
+            <button
+              type="button"
+              class="color"
+              [class.color--activo]="colorActual().nombre === c.nombre"
+              [style.--color]="c.hex"
+              [attr.aria-label]="c.nombre"
+              [attr.aria-pressed]="colorActual().nombre === c.nombre"
+              (click)="colorElegido.set(c.nombre)"
+            ></button>
+          }
+        </div>
+      </div>
+
+      <div class="grupo">
+        <h3 class="grupo__titulo">Descripción</h3>
+        <p class="descripcion">{{ producto().descripcion }}</p>
+      </div>
+
+      <div class="accion">
+        @if (aviso()) {
+          <p class="aviso" role="alert">{{ aviso() }}</p>
+        }
+        @if (agregado()) {
+          <p class="confirmacion" role="status">✓ Agregado al carrito</p>
+        }
+        <button type="button" class="boton-carrito" (click)="agregarAlCarrito()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5.5 9h13l-1.1 10.2a1.5 1.5 0 0 1-1.5 1.3H8.1a1.5 1.5 0 0 1-1.5-1.3L5.5 9z" />
+            <path d="M9 9V7.5a3 3 0 0 1 6 0V9" />
+          </svg>
+          <span class="boton-carrito__texto">Agregar al carrito</span>
+        </button>
+      </div>
+    </section>
+  </article>
+</div>
